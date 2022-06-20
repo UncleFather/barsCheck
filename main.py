@@ -7,7 +7,7 @@ from datetime import datetime as dt
 
 # Процедура проверки доступности хоста пингом
 def ping_check(hostname):
-    # Проверяем доступность с 3-х попыток, время задержки 4000 мс
+    # Проверяем доступность с 4-х попыток, время задержки 4000 мс
     response = os.system("ping -n 4 -w 4000 " + hostname)
     # Если ответ получен, возвращаем «True», иначе - «False»
     return True if response == 0 else False
@@ -17,7 +17,7 @@ def ping_check(hostname):
 username = "username"
 password = "password"
 # Прописываем ip-адрес МИС «Барс»
-bars_address = '10.31.6.59'
+bars_address = '10.31.61.59'
 # Инициализируем драйвер Google Chrome
 driver = webdriver.Chrome("chromedriver")
 # Формируем начало сообщения для записи в файл журнала
@@ -57,7 +57,7 @@ try:
 # При появлении любой ошибки обрабатываем ее
 except Exception as my_error:
     # Выполняем пинг до сервера Барса и фомируем вторую часть сообщения
-    result = f'Проблемы с МИС «Барс» (Проверка пингом прошла {"" if ping_check(bars_address) else "без"}успешно):\n{my_error}'
+    result = f'Проблемы с МИС «Барс» (Проверка пингом прошла {"" if ping_check(bars_address) else "без"}успешно):\n{my_error.__class__.__name__}\n'
 
 # Закрываем окно экземпляра браузера
 driver.close()
