@@ -3,6 +3,7 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from datetime import datetime as dt
+from initials_common import mis_username, mis_password, mis_address
 
 
 # Процедура проверки доступности хоста пингом
@@ -13,11 +14,6 @@ def ping_check(hostname):
     return True if response == 0 else False
 
 
-# Устанавливаем константы с учетными данными
-username = "username"
-password = "password"
-# Прописываем ip-адрес МИС «Барс»
-bars_address = '10.31.61.59'
 # Инициализируем драйвер Google Chrome
 driver = webdriver.Chrome("chromedriver")
 # Формируем начало сообщения для записи в файл журнала
@@ -30,12 +26,12 @@ try:
     # Устанавливаем размер окна браузера
     driver.set_window_size(1561, 1060)
     # Переходим на страницу входа на сайт
-    driver.get(f'http://{bars_address}/inst')
+    driver.get(f'http://{mis_address}/inst')
 
     # Парсим страничку входа. Находим поле для ввода имени пользователя и записываем в него имя
-    driver.find_element(By.NAME, "DBLogin").find_element(By.CLASS_NAME, "input-ctrl").send_keys(username)
+    driver.find_element(By.NAME, "DBLogin").find_element(By.CLASS_NAME, "input-ctrl").send_keys(mis_username)
     # Находим поле для ввода пароля и записываем в него пароль
-    driver.find_element(By.NAME, "DBPassword").find_element(By.CLASS_NAME, "input-ctrl").send_keys(password)
+    driver.find_element(By.NAME, "DBPassword").find_element(By.CLASS_NAME, "input-ctrl").send_keys(mis_password)
     # Находим кнопку отправки и нажимаем ее
     driver.find_element(By.CLASS_NAME, "bt").click()
 
@@ -56,8 +52,8 @@ try:
 
 # При появлении любой ошибки обрабатываем ее
 except Exception as my_error:
-    # Выполняем пинг до сервера Барса и фомируем вторую часть сообщения
-    result = f'Проблемы с МИС «Барс» (Проверка пингом прошла {"" if ping_check(bars_address) else "без"}успешно):\n{my_error.__class__.__name__}\n'
+    # Выполняем пинг до сервера Барса и формируем вторую часть сообщения
+    result = f'Проблемы с МИС «Барс» (Проверка пингом прошла {"" if ping_check(mis_address) else "без"}успешно):\n{my_error.__class__.__name__}\n'
 
 # Закрываем окно экземпляра браузера
 driver.close()
